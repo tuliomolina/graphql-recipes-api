@@ -1,11 +1,12 @@
 import { InjectRepository } from "typeorm-typedi-extensions";
 import jwt from "jsonwebtoken";
 
-import { UserInput, LoginInput } from "./types/user-input.type";
+import { UserInput } from "./types/user-input.type";
+import { LoginInput } from "./types/login-input.type";
 import { UserRepository } from "./user.repository";
 import { User } from "./user.entity";
 import { AuthToken } from "./types/token.type";
-import { AuthUser } from "src/modules/user/types/auth-request.type";
+import { PayloadUser } from "../../utils/types/payload-user.interface";
 
 export class UserService {
   constructor(
@@ -17,18 +18,20 @@ export class UserService {
   }
 
   async login(loginInput: LoginInput): Promise<AuthToken> {
-    const authentication: AuthUser = await this.userRespository.authenticateUser(
+    const payload: PayloadUser = await this.userRespository.validateCredentials(
       loginInput
     );
 
-    if (!authentication) {
+    if (!payload) {
       throw new Error("Invalid credentials");
     }
 
-    const token = jwt.sign(authentication, process.env.JWT_SECRET, {
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "24h",
     });
 
-    return { token };
+    const authToken: AuthToken = { token };
+
+    return authToken;
   }
 }

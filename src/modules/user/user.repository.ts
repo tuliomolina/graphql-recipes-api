@@ -3,8 +3,9 @@ import { Service } from "typedi";
 import bcrypt from "bcryptjs";
 
 import { User } from "./user.entity";
-import { UserInput, LoginInput } from "./types/user-input.type";
-import { AuthUser } from "./types/auth-request.type";
+import { UserInput } from "./types/user-input.type";
+import { LoginInput } from "./types/login-input.type";
+import { PayloadUser } from "src/utils/types/payload-user.interface";
 
 @Service()
 @EntityRepository(User)
@@ -30,17 +31,29 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async authenticateUser(loginInput: LoginInput): Promise<AuthUser | null> {
+  async validateCredentials(loginInput: LoginInput): Promise<PayloadUser> {
     const { email, password } = loginInput;
     const user = await this.findOne({ email });
 
     if (user && (await user.validatePassword(password))) {
-      return { userId: user.id, email: user.email };
+      const payloadUser: PayloadUser = { userId: user.id, email: user.email };
+      return payloadUser;
     }
-    return null;
+
+    return undefined;
   }
 
   private async hashPassword(password: string): Promise<string> {
     return await bcrypt.hash(password, 12);
+  }
+
+  async findUser(id: number): Promise<User> {
+    const foundUser = await this.findOne(id);
+
+    if (!foundUser) {
+      throw new Error(`User with ID "${id}" not found`);
+    }
+
+    return foundUser;
   }
 }

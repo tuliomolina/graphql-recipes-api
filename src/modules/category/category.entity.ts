@@ -5,15 +5,17 @@ import {
   Entity,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
   ManyToOne,
 } from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
+
+import { Recipe } from "../recipe/recipe.entity";
 import { User } from "../user/user.entity";
-import { Category } from "../category/category.entity";
 
 @ObjectType()
 @Entity()
-export class Recipe extends BaseEntity {
+export class Category extends BaseEntity {
   @Field((type) => ID)
   @PrimaryGeneratedColumn()
   id: number;
@@ -22,30 +24,20 @@ export class Recipe extends BaseEntity {
   @Column({ unique: true })
   name: string;
 
-  @Field()
-  @Column()
-  description: string;
-
-  @Field()
-  @Column()
-  ingredients: string;
+  @Field((type) => [Recipe])
+  @OneToMany((type) => Recipe, (recipe) => recipe.category, {
+    eager: true,
+  })
+  recipes: Recipe[];
 
   @Field((type) => User)
-  @ManyToOne((type) => User, (user) => user.recipes, { eager: false })
+  @ManyToOne((type) => User, (user) => user.categories, {
+    eager: false,
+  })
   user: User;
 
   @Column()
   userId: number;
-
-  @Field((type) => Category)
-  @ManyToOne((type) => Category, (category) => category.recipes, {
-    eager: false,
-    onDelete: "CASCADE",
-  })
-  category: Category;
-
-  @Column()
-  categoryId: number;
 
   @Field()
   @CreateDateColumn({ type: "timestamp" })
