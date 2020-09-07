@@ -8,6 +8,27 @@ import { Category } from "../category/category.entity";
 @Service()
 @EntityRepository(Recipe)
 export class RecipeRepository extends Repository<Recipe> {
+  async findRecipe(id: number): Promise<Recipe> {
+    const foundRecipe = await this.findOne(id);
+
+    if (!foundRecipe) {
+      throw new Error(`Recipe with ID "${id}" not found`);
+    }
+
+    return foundRecipe;
+  }
+
+  async findOwnedRecipe(id: number, userId: number): Promise<Recipe> {
+    const foundRecipe = await this.findOne({
+      where: { id, userId },
+    });
+    if (!foundRecipe) {
+      throw new Error(`Recipe with ID "${id}" not found`);
+    }
+
+    return foundRecipe;
+  }
+
   async createRecipe(
     createRecipeInput: CreateRecipeInput,
     user: User,

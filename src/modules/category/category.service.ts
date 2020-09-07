@@ -14,21 +14,6 @@ export class CategoryService {
     private userRespository: UserRepository
   ) {}
 
-  //   private async findOwnedCategory(
-  //     id: number,
-  //     userId: number
-  //   ): Promise<Category> {
-  //     const category = await this.categoryRespository.findOne({
-  //       id,
-  //       userId,
-  //     });
-
-  //     if (!category) {
-  //       throw new Error(`Category with ID "${id}" not found`);
-  //     }
-  //     return category;
-  //   }
-
   async createCategory(
     createCategoryInput: CreateCategoryInput,
     { userId }: PayloadUser
@@ -46,16 +31,10 @@ export class CategoryService {
     { userId }: PayloadUser
   ): Promise<Category> {
     const { id, name } = updateCategoryInput;
-    const result = await this.categoryRespository.update(
-      { id, userId },
-      { name }
-    );
 
-    if (result.affected === 0) {
-      throw new Error(`Category with ID "${id}" not found`);
-    }
+    await this.categoryRespository.update({ id, userId }, { name });
 
-    return await this.categoryRespository.findOne(id);
+    return await this.categoryRespository.findOwnedCategory(id, userId);
   }
 
   async deleteCategory(id: number, { userId }: PayloadUser): Promise<boolean> {

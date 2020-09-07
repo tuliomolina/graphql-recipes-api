@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Arg, Ctx, Authorized, ID } from "type-graphql";
+import { Resolver, Mutation, Arg, Ctx, Authorized, Int } from "type-graphql";
 import { CategoryService } from "./category.service";
 import { Category } from "./category.entity";
 import { CreateCategoryInput } from "./types/create-category-input.type";
@@ -36,7 +36,7 @@ export class CategoryResolver {
   @Authorized()
   @Mutation((returns) => Boolean, { description: "Deletes owned category" })
   async deleteCategory(
-    @Arg("id", (type) => ID) id: number,
+    @Arg("id", (type) => Int) id: number,
     @Ctx("payloadUser") payloadUser: PayloadUser
   ): Promise<boolean> {
     return await this.categoryService.deleteCategory(id, payloadUser);

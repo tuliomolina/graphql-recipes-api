@@ -1,4 +1,12 @@
-import { Resolver, Arg, Mutation, Ctx, ID, Authorized } from "type-graphql";
+import {
+  Resolver,
+  Arg,
+  Mutation,
+  Ctx,
+  Authorized,
+  Query,
+  Int,
+} from "type-graphql";
 import { RecipeService } from "./recipe.service";
 import { Recipe } from "./recipe.entity";
 import { CreateRecipeInput } from "./types/create-recipe-input.type";
@@ -8,6 +16,18 @@ import { PayloadUser } from "src/utils/types/payload-user.interface";
 @Resolver()
 export class RecipeResolver {
   constructor(private recipeService: RecipeService) {}
+
+  @Authorized()
+  @Query((returns) => [Recipe])
+  async getRecipes(): Promise<Recipe[]> {
+    return await this.recipeService.getRecipes();
+  }
+
+  @Authorized()
+  @Query((returns) => Recipe)
+  async getOneRecipe(@Arg("id", (type) => Int) id: number): Promise<Recipe> {
+    return await this.recipeService.getOneRecipe(id);
+  }
 
   @Authorized()
   @Mutation((returns) => Recipe)
@@ -36,7 +56,7 @@ export class RecipeResolver {
   @Authorized()
   @Mutation((returns) => Boolean)
   async deleteRecipe(
-    @Arg("id", (type) => ID) id: number,
+    @Arg("id", (type) => Int) id: number,
     @Ctx("payloadUser") payloadUser: PayloadUser
   ): Promise<boolean> {
     return await this.recipeService.deleteRecipe(id, payloadUser);

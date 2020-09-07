@@ -1,11 +1,11 @@
-import { InputType, Field, ID } from "type-graphql";
+import { InputType, Field, Int } from "type-graphql";
 import { Length } from "class-validator";
 
 import { Category } from "../category.entity";
 
 @InputType()
 export class UpdateCategoryInput implements Partial<Category> {
-  @Field((type) => ID)
+  @Field((type) => Int)
   id: number;
 
   @Field()

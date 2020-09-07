@@ -1,11 +1,10 @@
-import { Resolver, Query, Arg, Mutation, Authorized, Ctx } from "type-graphql";
+import { Resolver, Arg, Mutation } from "type-graphql";
 
 import { UserInput } from "./types/user-input.type";
 import { LoginInput } from "./types/login-input.type";
 import { UserService } from "./user.service";
 import { User } from "./user.entity";
 import { AuthToken } from "./types/token.type";
-import { Context } from "src/utils/types/context.interface";
 
 @Resolver()
 export class UserResolver {
@@ -24,18 +23,5 @@ export class UserResolver {
   })
   async login(@Arg("loginInput") loginInput: LoginInput): Promise<AuthToken> {
     return await this.userService.login(loginInput);
-  }
-
-  @Query()
-  noauthdQuery(@Ctx() context: Context): string {
-    console.log("not auth endpoint context", context.payloadUser);
-    return "all users";
-  }
-
-  @Authorized()
-  @Query()
-  authedQuery(@Ctx() context: Context): string {
-    console.log("auth endpoint context", context.payloadUser);
-    return "Authorized users only!";
   }
 }

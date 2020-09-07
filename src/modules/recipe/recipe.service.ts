@@ -18,6 +18,14 @@ export class RecipeService {
     private categoryRespository: CategoryRepository
   ) {}
 
+  async getRecipes(): Promise<Recipe[]> {
+    return await this.recipeRespository.find();
+  }
+
+  async getOneRecipe(id: number): Promise<Recipe> {
+    return await this.recipeRespository.findRecipe(id);
+  }
+
   async createRecipe(
     createRecipeInput: CreateRecipeInput,
     { userId }: PayloadUser
@@ -40,8 +48,8 @@ export class RecipeService {
     { userId }: PayloadUser
   ): Promise<Recipe> {
     const { id, categoryId } = updateRecipeInput;
-    delete updateRecipeInput.categoryId;
 
+    delete updateRecipeInput.categoryId;
     const updateData: UpdateRecipe = { ...updateRecipeInput };
 
     if (categoryId) {
@@ -49,16 +57,9 @@ export class RecipeService {
       updateData.category = category;
     }
 
-    const result = await this.recipeRespository.update(
-      { id, userId },
-      updateData
-    );
+    await this.recipeRespository.update({ id, userId }, updateData);
 
-    if (result.affected === 0) {
-      throw new Error(`Recipe with ID "${id}" not found`);
-    }
-
-    return await this.recipeRespository.findOne(id);
+    return await this.recipeRespository.findOwnedRecipe(id, userId);
   }
 
   async deleteRecipe(id: number, { userId }: PayloadUser): Promise<boolean> {

@@ -9,13 +9,24 @@ import { CreateCategoryInput } from "./types/create-category-input.type";
 @EntityRepository(Category)
 export class CategoryRepository extends Repository<Category> {
   async findCategory(id: number) {
-    const foundRecipe = await this.findOne(id);
+    const foundCategory = await this.findOne(id);
 
-    if (!foundRecipe) {
-      throw new Error(`Recipe with ID "${id}" not found`);
+    if (!foundCategory) {
+      throw new Error(`Category with ID "${id}" not found`);
     }
 
-    return foundRecipe;
+    return foundCategory;
+  }
+
+  async findOwnedCategory(id: number, userId: number): Promise<Category> {
+    const foundCategory = await this.findOne({
+      where: { id, userId },
+    });
+
+    if (!foundCategory) {
+      throw new Error(`Category with ID "${id}" not found`);
+    }
+    return foundCategory;
   }
 
   async createCategory(
