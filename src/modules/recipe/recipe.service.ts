@@ -26,6 +26,14 @@ export class RecipeService {
     return await this.recipeRespository.findRecipe(id);
   }
 
+  async getMyRecipes({ userId }: PayloadUser): Promise<Recipe[]> {
+    return await this.recipeRespository.find({ userId });
+  }
+
+  async getRecipesByOneCategory(categoryId: number): Promise<Recipe[]> {
+    return await this.recipeRespository.find({ categoryId });
+  }
+
   async createRecipe(
     createRecipeInput: CreateRecipeInput,
     { userId }: PayloadUser

@@ -14,6 +14,14 @@ export class CategoryService {
     private userRespository: UserRepository
   ) {}
 
+  async getCategories(): Promise<Category[]> {
+    return await this.categoryRespository.find();
+  }
+
+  async getOneCategory(id: number): Promise<Category> {
+    return await this.categoryRespository.findCategory(id);
+  }
+
   async createCategory(
     createCategoryInput: CreateCategoryInput,
     { userId }: PayloadUser

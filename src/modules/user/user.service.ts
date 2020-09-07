@@ -14,7 +14,7 @@ export class UserService {
   ) {}
 
   async signUp(userInput: UserInput): Promise<User> {
-    return await this.userRespository.signUp(userInput);
+    return await this.userRespository.createUser(userInput);
   }
 
   async login(loginInput: LoginInput): Promise<AuthToken> {
@@ -33,5 +33,9 @@ export class UserService {
     const authToken: AuthToken = { token };
 
     return authToken;
+  }
+
+  async getUser(id: number): Promise<User> {
+    return await this.userRespository.findOne(id);
   }
 }

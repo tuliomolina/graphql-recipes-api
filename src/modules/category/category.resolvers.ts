@@ -1,13 +1,46 @@
-import { Resolver, Mutation, Arg, Ctx, Authorized, Int } from "type-graphql";
+import {
+  Resolver,
+  Mutation,
+  Arg,
+  Ctx,
+  Authorized,
+  Int,
+  Query,
+  FieldResolver,
+  Root,
+  ResolverInterface,
+} from "type-graphql";
 import { CategoryService } from "./category.service";
 import { Category } from "./category.entity";
 import { CreateCategoryInput } from "./types/create-category-input.type";
 import { UpdateCategoryInput } from "./types/update-category-input.type";
 import { PayloadUser } from "src/utils/types/payload-user.interface";
+import { Recipe } from "../recipe/recipe.entity";
+import { User } from "../user/user.entity";
+import { UserService } from "../user/user.service";
+import { RecipeService } from "../recipe/recipe.service";
 
-@Resolver()
-export class CategoryResolver {
-  constructor(private categoryService: CategoryService) {}
+@Resolver((of) => Category)
+export class CategoryResolver implements ResolverInterface<Category> {
+  constructor(
+    private categoryService: CategoryService,
+    private userService: UserService,
+    private recipeService: RecipeService
+  ) {}
+
+  @Authorized()
+  @Query((returns) => [Category])
+  async getCategories(): Promise<Category[]> {
+    return await this.categoryService.getCategories();
+  }
+
+  @Authorized()
+  @Query((returns) => Category)
+  async getOneCategory(
+    @Arg("id", (type) => Int) id: number
+  ): Promise<Category> {
+    return await this.categoryService.getOneCategory(id);
+  }
 
   @Authorized()
   @Mutation((returns) => Category, { description: "Creates new category" })
@@ -40,5 +73,15 @@ export class CategoryResolver {
     @Ctx("payloadUser") payloadUser: PayloadUser
   ): Promise<boolean> {
     return await this.categoryService.deleteCategory(id, payloadUser);
+  }
+
+  @FieldResolver()
+  async recipes(@Root() category: Category): Promise<Recipe[]> {
+    return await this.recipeService.getRecipesByOneCategory(category.id);
+  }
+
+  @FieldResolver()
+  async user(@Root() category: Category): Promise<User> {
+    return await this.userService.getUser(category.userId);
   }
 }

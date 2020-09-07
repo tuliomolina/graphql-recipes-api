@@ -10,7 +10,17 @@ import { PayloadUser } from "src/utils/types/payload-user.interface";
 @Service()
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async signUp(userInput: UserInput): Promise<User> {
+  async findUser(id: number): Promise<User> {
+    const foundUser = await this.findOne(id);
+
+    if (!foundUser) {
+      throw new Error(`User with ID "${id}" not found`);
+    }
+
+    return foundUser;
+  }
+
+  async createUser(userInput: UserInput): Promise<User> {
     const { name, email, password } = userInput;
 
     const user = new User();
@@ -21,7 +31,7 @@ export class UserRepository extends Repository<User> {
 
     try {
       await user.save();
-      return user;
+      return await this.findOne(user.id);
     } catch (error) {
       if (error.code === "23505") {
         throw new Error("Email already exists");
@@ -45,15 +55,5 @@ export class UserRepository extends Repository<User> {
 
   private async hashPassword(password: string): Promise<string> {
     return await bcrypt.hash(password, 12);
-  }
-
-  async findUser(id: number): Promise<User> {
-    const foundUser = await this.findOne(id);
-
-    if (!foundUser) {
-      throw new Error(`User with ID "${id}" not found`);
-    }
-
-    return foundUser;
   }
 }
