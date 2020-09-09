@@ -15,18 +15,12 @@ import { Category } from "./category.entity";
 import { CreateCategoryInput } from "./types/create-category-input.type";
 import { UpdateCategoryInput } from "./types/update-category-input.type";
 import { PayloadUser } from "src/utils/types/payload-user.interface";
-import { Recipe } from "../recipe/recipe.entity";
 import { User } from "../user/user.entity";
-import { UserService } from "../user/user.service";
-import { RecipeService } from "../recipe/recipe.service";
+import { Loader } from "src/utils/types/loader.interface";
 
 @Resolver((of) => Category)
 export class CategoryResolver implements ResolverInterface<Category> {
-  constructor(
-    private categoryService: CategoryService,
-    private userService: UserService,
-    private recipeService: RecipeService
-  ) {}
+  constructor(private categoryService: CategoryService) {}
 
   @Authorized()
   @Query((returns) => [Category])
@@ -76,12 +70,10 @@ export class CategoryResolver implements ResolverInterface<Category> {
   }
 
   @FieldResolver()
-  async recipes(@Root() category: Category): Promise<Recipe[]> {
-    return await this.recipeService.getRecipesByOneCategory(category.id);
-  }
-
-  @FieldResolver()
-  async user(@Root() category: Category): Promise<User> {
-    return await this.userService.getUser(category.userId);
+  async user(
+    @Root() category: Category,
+    @Ctx("loader") loader: Loader
+  ): Promise<User> {
+    return await loader.user.load(category.userId);
   }
 }

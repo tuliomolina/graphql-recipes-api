@@ -16,17 +16,12 @@ import { CreateRecipeInput } from "./types/create-recipe-input.type";
 import { UpdateRecipeInput } from "./types/update-recipe-input.type";
 import { PayloadUser } from "src/utils/types/payload-user.interface";
 import { Category } from "../category/category.entity";
-import { CategoryService } from "../category/category.service";
 import { User } from "../user/user.entity";
-import { UserService } from "../user/user.service";
+import { Loader } from "src/utils/types/loader.interface";
 
 @Resolver((of) => Recipe)
 export class RecipeResolver implements ResolverInterface<Recipe> {
-  constructor(
-    private recipeService: RecipeService,
-    private categoryService: CategoryService,
-    private userService: UserService
-  ) {}
+  constructor(private recipeService: RecipeService) {}
 
   @Authorized()
   @Query((returns) => [Recipe])
@@ -82,12 +77,18 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
   }
 
   @FieldResolver()
-  async category(@Root() recipe: Recipe): Promise<Category> {
-    return await this.categoryService.getOneCategory(recipe.categoryId);
+  async category(
+    @Root() recipe: Recipe,
+    @Ctx("loader") loader: Loader
+  ): Promise<Category> {
+    return await loader.category.load(recipe.categoryId);
   }
 
   @FieldResolver()
-  async user(@Root() recipe: Recipe): Promise<User> {
-    return await this.userService.getUser(recipe.userId);
+  async user(
+    @Root() recipe: Recipe,
+    @Ctx("loader") loader: Loader
+  ): Promise<User> {
+    return await loader.user.load(recipe.userId);
   }
 }

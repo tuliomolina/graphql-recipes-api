@@ -10,6 +10,7 @@ export async function connectDatabase() {
     database: "recipes",
     entities: [__dirname + "/../**/*.entity.*"],
     synchronize: true,
+    logging: true,
   });
   console.log("Connected to database");
 }

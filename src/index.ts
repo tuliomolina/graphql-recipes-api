@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "dataloader";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
@@ -8,13 +9,12 @@ import dotEnv from "dotenv";
 
 import { UserResolver } from "./modules/user/user.resolver";
 import { connectDatabase } from "./config/typeorm.config";
-import { contextCreator } from "./utils/context-creator";
-import { Context } from "./utils/types/context.interface";
-import { authClient } from "./utils/auth-client";
+import { contextCreator } from "./utils/context/context-creator";
+import { authenticationChecker } from "./utils/auth/authentication-checker";
 import { RecipeResolver } from "./modules/recipe/recipe.resolvers";
 import { CategoryResolver } from "./modules/category/category.resolvers";
 
-async function main(): Promise<void> {
+async function main() {
   dotEnv.config();
 
   useContainer(Container);
@@ -27,15 +27,13 @@ async function main(): Promise<void> {
     dateScalarMode: "isoDate",
     validate: true,
     container: Container,
-    authChecker: authClient,
+    authChecker: authenticationChecker,
   });
 
   const apolloServer = new ApolloServer({
     schema,
     playground: true,
-    context: (context): Context => {
-      return contextCreator(context);
-    },
+    context: contextCreator,
     formatError: ({ message, extensions }) => {
       return { message, extensions };
     },
