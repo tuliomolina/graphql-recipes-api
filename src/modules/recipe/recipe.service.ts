@@ -7,6 +7,8 @@ import { UserRepository } from "../user/user.repository";
 import { PayloadUser } from "src/utils/types/payload-user.interface";
 import { CategoryRepository } from "../category/category.repository";
 import { UpdateRecipe } from "./types/update-recipe.interface";
+import { SearchInput } from "../utils/types/search-input.type";
+import { validateSearchInputExistence } from "../utils/validate-search-input-existence";
 
 export class RecipeService {
   constructor(
@@ -22,8 +24,16 @@ export class RecipeService {
     return await this.recipeRespository.find();
   }
 
-  async getOneRecipe(id: number): Promise<Recipe> {
-    return await this.recipeRespository.findRecipe(id);
+  async getOneRecipe(searchInput: SearchInput): Promise<Recipe> {
+    validateSearchInputExistence(searchInput);
+
+    const recipe = await this.recipeRespository.findRecipe(searchInput);
+
+    if (!recipe) {
+      throw new Error("Recipe not found");
+    }
+
+    return recipe;
   }
 
   async getMyRecipes({ userId }: PayloadUser): Promise<Recipe[]> {
@@ -55,6 +65,10 @@ export class RecipeService {
     updateRecipeInput: UpdateRecipeInput,
     { userId }: PayloadUser
   ): Promise<Recipe> {
+    if (Object.keys(updateRecipeInput).length <= 1) {
+      throw new Error("No update field provided");
+    }
+
     const { id, categoryId } = updateRecipeInput;
 
     delete updateRecipeInput.categoryId;

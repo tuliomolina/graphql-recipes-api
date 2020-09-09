@@ -18,6 +18,7 @@ import { PayloadUser } from "src/utils/types/payload-user.interface";
 import { Category } from "../category/category.entity";
 import { User } from "../user/user.entity";
 import { Loader } from "src/utils/types/loader.interface";
+import { SearchInput } from "../utils/types/search-input.type";
 
 @Resolver((of) => Recipe)
 export class RecipeResolver implements ResolverInterface<Recipe> {
@@ -31,8 +32,10 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
 
   @Authorized()
   @Query((returns) => Recipe)
-  async getOneRecipe(@Arg("id", (type) => Int) id: number): Promise<Recipe> {
-    return await this.recipeService.getOneRecipe(id);
+  async getOneRecipe(
+    @Arg("searchInput", (type) => SearchInput) searchInput: SearchInput
+  ): Promise<Recipe> {
+    return await this.recipeService.getOneRecipe(searchInput);
   }
 
   @Authorized()

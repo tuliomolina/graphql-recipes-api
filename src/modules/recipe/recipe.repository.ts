@@ -4,17 +4,13 @@ import { Service } from "typedi";
 import { CreateRecipeInput } from "./types/create-recipe-input.type";
 import { User } from "../user/user.entity";
 import { Category } from "../category/category.entity";
+import { SearchInput } from "../utils/types/search-input.type";
 
 @Service()
 @EntityRepository(Recipe)
 export class RecipeRepository extends Repository<Recipe> {
-  async findRecipe(id: number): Promise<Recipe> {
-    const foundRecipe = await this.findOne(id);
-
-    if (!foundRecipe) {
-      throw new Error(`Recipe with ID "${id}" not found`);
-    }
-
+  async findRecipe({ id, name }: SearchInput): Promise<Recipe> {
+    const foundRecipe = await this.findOne({ where: [{ id }, { name }] });
     return foundRecipe;
   }
 
