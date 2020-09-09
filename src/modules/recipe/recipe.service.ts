@@ -52,7 +52,7 @@ export class RecipeService {
 
     const { categoryId } = createRecipeInput;
 
-    const category = await this.categoryRespository.findCategory(categoryId);
+    const category = await this.categoryRespository.findOneOrFail(categoryId);
 
     return await this.recipeRespository.createRecipe(
       createRecipeInput,
@@ -75,7 +75,7 @@ export class RecipeService {
     const updateData: UpdateRecipe = { ...updateRecipeInput };
 
     if (categoryId) {
-      const category = await this.categoryRespository.findCategory(categoryId);
+      const category = await this.categoryRespository.findOneOrFail(categoryId);
       updateData.category = category;
     }
 

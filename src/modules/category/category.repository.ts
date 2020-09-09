@@ -4,17 +4,13 @@ import { Service } from "typedi";
 import { Category } from "./category.entity";
 import { User } from "../user/user.entity";
 import { CreateCategoryInput } from "./types/create-category-input.type";
+import { SearchInput } from "../utils/types/search-input.type";
 
 @Service()
 @EntityRepository(Category)
 export class CategoryRepository extends Repository<Category> {
-  async findCategory(id: number) {
-    const foundCategory = await this.findOne(id);
-
-    if (!foundCategory) {
-      throw new Error(`Category with ID "${id}" not found`);
-    }
-
+  async findCategory({ id, name }: SearchInput) {
+    const foundCategory = await this.findOne({ where: [{ id }, { name }] });
     return foundCategory;
   }
 

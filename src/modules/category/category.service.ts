@@ -5,6 +5,8 @@ import { CreateCategoryInput } from "./types/create-category-input.type";
 import { UserRepository } from "../user/user.repository";
 import { Category } from "./category.entity";
 import { UpdateCategoryInput } from "./types/update-category-input.type";
+import { SearchInput } from "../utils/types/search-input.type";
+import { validateSearchInputExistence } from "../utils/validate-search-input-existence";
 
 export class CategoryService {
   constructor(
@@ -18,8 +20,16 @@ export class CategoryService {
     return await this.categoryRespository.find();
   }
 
-  async getOneCategory(id: number): Promise<Category> {
-    return await this.categoryRespository.findCategory(id);
+  async getOneCategory(searchInput: SearchInput): Promise<Category> {
+    validateSearchInputExistence(searchInput);
+
+    const category = await this.categoryRespository.findCategory(searchInput);
+
+    if (!category) {
+      throw new Error("Category not found");
+    }
+
+    return category;
   }
 
   async createCategory(
