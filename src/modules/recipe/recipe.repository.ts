@@ -44,7 +44,6 @@ export class RecipeRepository extends Repository<Recipe> {
       categoryNameList,
     } = filterInput;
 
-    console.log(filterInput);
     const query = this.createQueryBuilder("recipe").innerJoin(
       "recipe.category",
       "category"
@@ -71,12 +70,7 @@ export class RecipeRepository extends Repository<Recipe> {
       });
     }
 
-    const result = await query.getMany();
-
-    console.log(result);
-    console.log(result.length);
-
-    return result;
+    return await query.getMany();
   }
 
   async createRecipe(
@@ -84,12 +78,8 @@ export class RecipeRepository extends Repository<Recipe> {
     user: User,
     category: Category
   ): Promise<Recipe> {
-    const { name, description, ingredients } = createRecipeInput;
-
     const recipe = this.create({
-      name,
-      description,
-      ingredients,
+      ...createRecipeInput,
       category,
       user,
     });

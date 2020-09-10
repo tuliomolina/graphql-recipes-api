@@ -24,14 +24,6 @@ import { FilterInput } from "./types/filter-input.type";
 @Resolver((of) => Recipe)
 export class RecipeResolver implements ResolverInterface<Recipe> {
   constructor(private recipeService: RecipeService) {}
-  // @Authorized()
-  // @Query((returns) => Recipe)
-  // async test(
-  //   @Arg("nameOrIdInput", (type) => NameOrIdInput) nameOrIdInput: NameOrIdInput
-  // ): Promise<Recipe> {
-  //   return await this.recipeService.test(nameOrIdInput);
-  // }
-
   @Authorized()
   @Query((returns) => [Recipe])
   async getRecipes(): Promise<Recipe[]> {
