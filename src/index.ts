@@ -5,7 +5,6 @@ import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { useContainer } from "typeorm";
 import { Container } from "typedi";
-import dotEnv from "dotenv";
 
 import { UserResolver } from "./modules/user/user.resolver";
 import { connectDatabase } from "./config/typeorm.config";
@@ -15,8 +14,6 @@ import { RecipeResolver } from "./modules/recipe/recipe.resolvers";
 import { CategoryResolver } from "./modules/category/category.resolvers";
 
 async function main() {
-  dotEnv.config();
-
   useContainer(Container);
   await connectDatabase();
 
