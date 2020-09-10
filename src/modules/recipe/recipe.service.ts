@@ -56,7 +56,7 @@ export class RecipeService {
   ): Promise<Recipe> {
     const { recipeNameOrId, categoryNameOrId } = updateRecipeInput;
 
-    const recipe = await this.recipeRespository.findOwnedRecipe(
+    const recipe = await this.recipeRespository.findRecipe(
       recipeNameOrId,
       userId
     );

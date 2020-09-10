@@ -11,32 +11,22 @@ import { validateNameOrIdInput } from "../utils/validate-name-or-id-input";
 @Service()
 @EntityRepository(Recipe)
 export class RecipeRepository extends Repository<Recipe> {
-  async findRecipe(recipeNameOrIdInput: NameOrIdInput): Promise<Recipe> {
-    validateNameOrIdInput(recipeNameOrIdInput, "Recipe");
-
-    const { id, name } = recipeNameOrIdInput;
-    const foundRecipe = await this.findOne({ where: [{ id }, { name }] });
-
-    if (!foundRecipe) {
-      throw new Error("Recipe not found");
-    }
-
-    return foundRecipe;
-  }
-
-  async findOwnedRecipe(
+  async findRecipe(
     recipeNameOrIdInput: NameOrIdInput,
-    userId: number
+    userId?: number
   ): Promise<Recipe> {
     validateNameOrIdInput(recipeNameOrIdInput, "Recipe");
 
     const { id, name } = recipeNameOrIdInput;
-    const foundRecipe = await this.findOne({
-      where: [
-        { id, userId },
-        { name, userId },
-      ],
-    });
+    const query = this.createQueryBuilder("recipe");
+
+    query.where("(recipe.id = :id OR recipe.name = :name)", { id, name });
+
+    if (userId) {
+      query.andWhere("recipe.userId = :userId", { userId });
+    }
+
+    const foundRecipe = await query.getOne();
 
     if (!foundRecipe) {
       throw new Error("Recipe not found");

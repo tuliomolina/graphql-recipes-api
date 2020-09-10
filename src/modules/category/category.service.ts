@@ -43,7 +43,7 @@ export class CategoryService {
   ): Promise<Category> {
     const { categoryNameOrId, updateName } = updateCategoryInput;
 
-    const category = await this.categoryRespository.findOwnedCategory(
+    const category = await this.categoryRespository.findCategory(
       categoryNameOrId,
       userId
     );

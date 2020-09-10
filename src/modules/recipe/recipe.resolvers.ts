@@ -39,6 +39,14 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
     return await this.recipeService.getOneRecipe(nameOrIdInput);
   }
 
+  // @Authorized()
+  // @Query((returns) => Recipe)
+  // async test(
+  //   @Arg("nameOrIdInput", (type) => NameOrIdInput) nameOrIdInput: NameOrIdInput
+  // ): Promise<Recipe> {
+  //   return await this.recipeService.test(nameOrIdInput);
+  // }
+
   @Authorized()
   @Query((returns) => [Recipe])
   async getMyRecipes(

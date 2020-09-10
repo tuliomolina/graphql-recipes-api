@@ -10,34 +10,27 @@ import { validateNameOrIdInput } from "../utils/validate-name-or-id-input";
 @Service()
 @EntityRepository(Category)
 export class CategoryRepository extends Repository<Category> {
-  async findCategory(categoryNameOrIdInput: NameOrIdInput) {
+  async findCategory(
+    categoryNameOrIdInput: NameOrIdInput,
+    userId?: number
+  ): Promise<Category> {
     validateNameOrIdInput(categoryNameOrIdInput, "Category");
 
     const { id, name } = categoryNameOrIdInput;
-    const foundCategory = await this.findOne({
-      where: [{ id }, { name }],
-    });
+    const query = this.createQueryBuilder("category").leftJoinAndSelect(
+      "category.recipes",
+      "recipes"
+    );
 
-    if (!foundCategory) {
-      throw new Error("Category not found");
+    query.where("(category.id = :id OR category.name = :name)", { id, name });
+
+    if (userId) {
+      query.andWhere("category.userId = :userId", { userId });
     }
 
-    return foundCategory;
-  }
+    const foundCategory = await query.getOne();
 
-  async findOwnedCategory(
-    categoryNameOrIdInput: NameOrIdInput,
-    userId: number
-  ) {
-    validateNameOrIdInput(categoryNameOrIdInput, "Category");
-
-    const { id, name } = categoryNameOrIdInput;
-    const foundCategory = await this.findOne({
-      where: [
-        { id, userId },
-        { name, userId },
-      ],
-    });
+    console.log(foundCategory);
 
     if (!foundCategory) {
       throw new Error("Category not found");
