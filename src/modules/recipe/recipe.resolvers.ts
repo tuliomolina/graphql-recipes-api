@@ -99,7 +99,7 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
 
   @Authorized()
   @Mutation((returns) => Boolean, {
-    description: `Deletes a recipe identified by either name or id. 
+    description: `Deletes a recipe identified by id. 
   This operation may only be performed by the recipe's owner user. 
   Returns true if the operation was successful.`,
   })

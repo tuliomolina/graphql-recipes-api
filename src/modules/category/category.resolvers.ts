@@ -74,7 +74,7 @@ export class CategoryResolver implements ResolverInterface<Category> {
 
   @Authorized()
   @Mutation((returns) => Boolean, {
-    description: `Deletes a category identified by either name or id. 
+    description: `Deletes a category identified by id. 
     This operation may only be performed by the category's owner user. 
     All recipes related to this category object are also deleted on cascade. 
     Returns true if the operation was successful.`,
