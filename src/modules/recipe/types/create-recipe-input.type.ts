@@ -4,7 +4,9 @@ import { Length } from "class-validator";
 import { Recipe } from "../recipe.entity";
 import { NameOrIdInput } from "../../utils/types/name-or-id-input.type";
 
-@InputType()
+@InputType({
+  description: "Type for defining and validating Recipe creation input data",
+})
 export class CreateRecipeInput implements Partial<Recipe> {
   @Field()
   @Length(2, 255)

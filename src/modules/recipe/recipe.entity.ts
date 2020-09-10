@@ -8,10 +8,14 @@ import {
   ManyToOne,
 } from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
+
 import { User } from "../user/user.entity";
 import { Category } from "../category/category.entity";
 
-@ObjectType()
+@ObjectType({
+  description:
+    "Recipe object type. It has a many to one relation with both User and Category types",
+})
 @Entity()
 export class Recipe extends BaseEntity {
   @Field((type) => ID)

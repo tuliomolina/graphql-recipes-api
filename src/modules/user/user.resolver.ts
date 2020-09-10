@@ -11,15 +11,14 @@ export class UserResolver {
   constructor(private userService: UserService) {}
 
   @Mutation((returns) => User, {
-    description:
-      "New user registration, returns the newly created user in success",
+    description: "New user creation, returns the newly created user object",
   })
   async signUp(@Arg("userInput") userInput: UserInput): Promise<User> {
     return await this.userService.signUp(userInput);
   }
 
   @Mutation((returns) => AuthToken, {
-    description: "User login, returns JWT auth token in success",
+    description: "User login, returns JWT auth token",
   })
   async login(@Arg("loginInput") loginInput: LoginInput): Promise<AuthToken> {
     return await this.userService.login(loginInput);

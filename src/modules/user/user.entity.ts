@@ -8,10 +8,14 @@ import {
 } from "typeorm";
 import { Field, ObjectType, ID } from "type-graphql";
 import bcrypt from "bcryptjs";
+
 import { Recipe } from "../recipe/recipe.entity";
 import { Category } from "../category/category.entity";
 
-@ObjectType()
+@ObjectType({
+  description: `User object type. It has one to many relation with both Category and Recipe types. 
+    A user is authorized to mutate only its related recipe and category objects.`,
+})
 @Entity()
 export class User extends BaseEntity {
   @Field((type) => ID)

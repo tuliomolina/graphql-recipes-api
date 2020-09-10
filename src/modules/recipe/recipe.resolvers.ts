@@ -10,6 +10,7 @@ import {
   ResolverInterface,
   Root,
 } from "type-graphql";
+
 import { RecipeService } from "./recipe.service";
 import { Recipe } from "./recipe.entity";
 import { CreateRecipeInput } from "./types/create-recipe-input.type";
@@ -25,13 +26,17 @@ import { FilterInput } from "./types/filter-input.type";
 export class RecipeResolver implements ResolverInterface<Recipe> {
   constructor(private recipeService: RecipeService) {}
   @Authorized()
-  @Query((returns) => [Recipe])
+  @Query((returns) => [Recipe], {
+    description: "Returns an array of all existing recipes",
+  })
   async getRecipes(): Promise<Recipe[]> {
     return await this.recipeService.getRecipes();
   }
 
   @Authorized()
-  @Query((returns) => Recipe)
+  @Query((returns) => Recipe, {
+    description: "Returns one recipe given either its name or id",
+  })
   async getOneRecipe(
     @Arg("nameOrIdInput", (type) => NameOrIdInput) nameOrIdInput: NameOrIdInput
   ): Promise<Recipe> {
@@ -39,7 +44,10 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
   }
 
   @Authorized()
-  @Query((returns) => [Recipe])
+  @Query((returns) => [Recipe], {
+    description:
+      "Returns an array of all existing recipes belonging to the current user",
+  })
   async getMyRecipes(
     @Ctx("payloadUser") payloadUser: PayloadUser
   ): Promise<Recipe[]> {
@@ -47,7 +55,12 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
   }
 
   @Authorized()
-  @Query((returns) => [Recipe])
+  @Query((returns) => [Recipe], {
+    description: `Filters amongst all recipes matching the following criteria: 
+    array of recipe names, description, ingredient, array of category names. 
+    Each criterion is optional, and they are combined using AND logical operators. 
+    Returns an array of recipes`,
+  })
   async getFilteredRecipes(
     @Arg("filterInput") filterInput: FilterInput
   ): Promise<Recipe[]> {
@@ -55,7 +68,10 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
   }
 
   @Authorized()
-  @Mutation((returns) => Recipe)
+  @Mutation((returns) => Recipe, {
+    description: `Creates a new recipe belonging to the current user and linked 
+      to an existing category provided with either name or id. Returns the newly created recipe`,
+  })
   async createRecipe(
     @Arg("createRecipeInput") createRecipeInput: CreateRecipeInput,
     @Ctx("payloadUser") payloadUser: PayloadUser
@@ -67,7 +83,10 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
   }
 
   @Authorized()
-  @Mutation((returns) => Recipe)
+  @Mutation((returns) => Recipe, {
+    description: `Updates a recipe identified by either name or id. This operation may only be 
+    performed by the recipe's owner user. Returns the updated recipe`,
+  })
   async updateRecipe(
     @Arg("updateRecipeInput") updateRecipeInput: UpdateRecipeInput,
     @Ctx("payloadUser") payloadUser: PayloadUser
@@ -79,7 +98,11 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
   }
 
   @Authorized()
-  @Mutation((returns) => Boolean)
+  @Mutation((returns) => Boolean, {
+    description: `Deletes a recipe identified by either name or id. 
+  This operation may only be performed by the recipe's owner user. 
+  Returns true if the operation was successful.`,
+  })
   async deleteRecipe(
     @Arg("id", (type) => Int) id: number,
     @Ctx("payloadUser") payloadUser: PayloadUser

@@ -1,7 +1,9 @@
 import { InputType, Field } from "type-graphql";
 import { Length } from "class-validator";
 
-@InputType()
+@InputType({
+  description: "Type for defining and validating Recipe filtering input data",
+})
 export class FilterInput {
   @Field((type) => [String], { nullable: true })
   nameList: string[];

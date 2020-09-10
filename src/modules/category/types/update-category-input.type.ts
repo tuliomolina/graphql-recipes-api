@@ -3,7 +3,9 @@ import { Length } from "class-validator";
 
 import { NameOrIdInput } from "../../utils/types/name-or-id-input.type";
 
-@InputType()
+@InputType({
+  description: "Type for defining and validating Category update input data",
+})
 export class UpdateCategoryInput {
   @Field((type) => NameOrIdInput)
   categoryNameOrId: NameOrIdInput;

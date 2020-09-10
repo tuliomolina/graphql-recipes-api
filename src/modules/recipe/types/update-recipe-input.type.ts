@@ -1,8 +1,11 @@
 import { InputType, Field } from "type-graphql";
 import { Length } from "class-validator";
+
 import { NameOrIdInput } from "../../utils/types/name-or-id-input.type";
 
-@InputType()
+@InputType({
+  description: "Type for defining and validating Recipe update input data",
+})
 export class UpdateRecipeInput {
   @Field((type) => NameOrIdInput)
   recipeNameOrId: NameOrIdInput;

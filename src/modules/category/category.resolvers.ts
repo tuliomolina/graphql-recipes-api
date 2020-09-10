@@ -10,6 +10,7 @@ import {
   Root,
   ResolverInterface,
 } from "type-graphql";
+
 import { CategoryService } from "./category.service";
 import { Category } from "./category.entity";
 import { CreateCategoryInput } from "./types/create-category-input.type";
@@ -24,13 +25,17 @@ export class CategoryResolver implements ResolverInterface<Category> {
   constructor(private categoryService: CategoryService) {}
 
   @Authorized()
-  @Query((returns) => [Category])
+  @Query((returns) => [Category], {
+    description: "Returns an array of all existing categories",
+  })
   async getCategories(): Promise<Category[]> {
     return await this.categoryService.getCategories();
   }
 
   @Authorized()
-  @Query((returns) => Category)
+  @Query((returns) => Category, {
+    description: "Returns one category given either its name or id",
+  })
   async getOneCategory(
     @Arg("nameOrIdInput", (type) => NameOrIdInput) nameOrIdInput: NameOrIdInput
   ): Promise<Category> {
@@ -38,7 +43,10 @@ export class CategoryResolver implements ResolverInterface<Category> {
   }
 
   @Authorized()
-  @Mutation((returns) => Category, { description: "Creates new category" })
+  @Mutation((returns) => Category, {
+    description: `Creates a new category belonging to the current user. 
+    Returns the newly created category`,
+  })
   async createCategory(
     @Arg("createCategoryInput") createCategoryInput: CreateCategoryInput,
     @Ctx("payloadUser") payloadUser: PayloadUser
@@ -50,7 +58,10 @@ export class CategoryResolver implements ResolverInterface<Category> {
   }
 
   @Authorized()
-  @Mutation((returns) => Category, { description: "Updates owned category" })
+  @Mutation((returns) => Category, {
+    description: `Updates a category identified by either name or id. This operation may only be 
+    performed by the category's owner user. Returns the updated category`,
+  })
   async updateCategory(
     @Arg("updateCategoryInput") updateCategoryInput: UpdateCategoryInput,
     @Ctx("payloadUser") payloadUser: PayloadUser
@@ -62,7 +73,12 @@ export class CategoryResolver implements ResolverInterface<Category> {
   }
 
   @Authorized()
-  @Mutation((returns) => Boolean, { description: "Deletes owned category" })
+  @Mutation((returns) => Boolean, {
+    description: `Deletes a category identified by either name or id. 
+    This operation may only be performed by the category's owner user. 
+    All recipes related to this category object are also deleted on cascade. 
+    Returns true if the operation was successful.`,
+  })
   async deleteCategory(
     @Arg("id", (type) => Int) id: number,
     @Ctx("payloadUser") payloadUser: PayloadUser

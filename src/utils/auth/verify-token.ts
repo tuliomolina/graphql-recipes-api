@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+
 import { PayloadUser } from "../types/payload-user.interface";
 
 export const verifyToken = ({ headers }: any): PayloadUser => {
