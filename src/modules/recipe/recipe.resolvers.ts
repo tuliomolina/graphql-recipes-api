@@ -18,7 +18,8 @@ import { PayloadUser } from "src/utils/types/payload-user.interface";
 import { Category } from "../category/category.entity";
 import { User } from "../user/user.entity";
 import { Loader } from "src/utils/types/loader.interface";
-import { SearchInput } from "../utils/types/search-input.type";
+import { NameOrIdInput } from "../utils/types/name-or-id-input.type";
+// import { FilterInput } from "./types/filter-input.type";
 
 @Resolver((of) => Recipe)
 export class RecipeResolver implements ResolverInterface<Recipe> {
@@ -33,9 +34,9 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
   @Authorized()
   @Query((returns) => Recipe)
   async getOneRecipe(
-    @Arg("searchInput", (type) => SearchInput) searchInput: SearchInput
+    @Arg("nameOrIdInput", (type) => NameOrIdInput) nameOrIdInput: NameOrIdInput
   ): Promise<Recipe> {
-    return await this.recipeService.getOneRecipe(searchInput);
+    return await this.recipeService.getOneRecipe(nameOrIdInput);
   }
 
   @Authorized()
@@ -45,6 +46,14 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
   ): Promise<Recipe[]> {
     return await this.recipeService.getMyRecipes(payloadUser);
   }
+
+  // @Authorized()
+  // @Query((returns) => [Recipe])
+  // async getFilteredRecipes(
+  //   @Arg("filterInput") filterInput: FilterInput
+  // ): Promise<void> {
+  //   // return await this.recipeService.getFilteredRecipes(filterInput);
+  // }
 
   @Authorized()
   @Mutation((returns) => Recipe)

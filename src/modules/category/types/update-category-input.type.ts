@@ -1,14 +1,14 @@
-import { InputType, Field, Int } from "type-graphql";
+import { InputType, Field } from "type-graphql";
 import { Length } from "class-validator";
 
-import { Category } from "../category.entity";
+import { NameOrIdInput } from "../../utils/types/name-or-id-input.type";
 
 @InputType()
-export class UpdateCategoryInput implements Partial<Category> {
-  @Field((type) => Int)
-  id: number;
+export class UpdateCategoryInput {
+  @Field((type) => NameOrIdInput)
+  categoryNameOrId: NameOrIdInput;
 
   @Field()
   @Length(3, 255)
-  name: string;
+  updateName: string;
 }

@@ -17,7 +17,7 @@ import { UpdateCategoryInput } from "./types/update-category-input.type";
 import { PayloadUser } from "src/utils/types/payload-user.interface";
 import { User } from "../user/user.entity";
 import { Loader } from "src/utils/types/loader.interface";
-import { SearchInput } from "../utils/types/search-input.type";
+import { NameOrIdInput } from "../utils/types/name-or-id-input.type";
 
 @Resolver((of) => Category)
 export class CategoryResolver implements ResolverInterface<Category> {
@@ -32,9 +32,9 @@ export class CategoryResolver implements ResolverInterface<Category> {
   @Authorized()
   @Query((returns) => Category)
   async getOneCategory(
-    @Arg("searchInput", (type) => SearchInput) searchInput: SearchInput
+    @Arg("nameOrIdInput", (type) => NameOrIdInput) nameOrIdInput: NameOrIdInput
   ): Promise<Category> {
-    return await this.categoryService.getOneCategory(searchInput);
+    return await this.categoryService.getOneCategory(nameOrIdInput);
   }
 
   @Authorized()

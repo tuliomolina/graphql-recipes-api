@@ -2,7 +2,7 @@ import { InputType, Field, Int } from "type-graphql";
 import { Length } from "class-validator";
 
 @InputType()
-export class SearchInput {
+export class NameOrIdInput {
   @Field((type) => Int, { nullable: true })
   id?: number;
 

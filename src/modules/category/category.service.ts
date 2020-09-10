@@ -5,8 +5,7 @@ import { CreateCategoryInput } from "./types/create-category-input.type";
 import { UserRepository } from "../user/user.repository";
 import { Category } from "./category.entity";
 import { UpdateCategoryInput } from "./types/update-category-input.type";
-import { SearchInput } from "../utils/types/search-input.type";
-import { validateSearchInputExistence } from "../utils/validate-search-input-existence";
+import { NameOrIdInput } from "../utils/types/name-or-id-input.type";
 
 export class CategoryService {
   constructor(
@@ -20,16 +19,10 @@ export class CategoryService {
     return await this.categoryRespository.find();
   }
 
-  async getOneCategory(searchInput: SearchInput): Promise<Category> {
-    validateSearchInputExistence(searchInput);
-
-    const category = await this.categoryRespository.findCategory(searchInput);
-
-    if (!category) {
-      throw new Error("Category not found");
-    }
-
-    return category;
+  async getOneCategory(
+    categoryNameOrIdInput: NameOrIdInput
+  ): Promise<Category> {
+    return await this.categoryRespository.findCategory(categoryNameOrIdInput);
   }
 
   async createCategory(
@@ -48,11 +41,16 @@ export class CategoryService {
     updateCategoryInput: UpdateCategoryInput,
     { userId }: PayloadUser
   ): Promise<Category> {
-    const { id, name } = updateCategoryInput;
+    const { categoryNameOrId, updateName } = updateCategoryInput;
 
-    await this.categoryRespository.update({ id, userId }, { name });
+    const category = await this.categoryRespository.findOwnedCategory(
+      categoryNameOrId,
+      userId
+    );
 
-    return await this.categoryRespository.findOwnedCategory(id, userId);
+    category.name = updateName;
+
+    return await category.save();
   }
 
   async deleteCategory(id: number, { userId }: PayloadUser): Promise<boolean> {

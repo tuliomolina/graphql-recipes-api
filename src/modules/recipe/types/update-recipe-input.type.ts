@@ -1,25 +1,24 @@
-import { InputType, Field, Int } from "type-graphql";
+import { InputType, Field } from "type-graphql";
 import { Length } from "class-validator";
-
-import { Recipe } from "../recipe.entity";
+import { NameOrIdInput } from "../../utils/types/name-or-id-input.type";
 
 @InputType()
-export class UpdateRecipeInput implements Partial<Recipe> {
-  @Field((type) => Int)
-  id: number;
+export class UpdateRecipeInput {
+  @Field((type) => NameOrIdInput)
+  recipeNameOrId: NameOrIdInput;
 
   @Field({ nullable: true })
   @Length(2, 255)
   name?: string;
 
   @Field({ nullable: true })
-  @Length(10, 255)
+  @Length(5, 255)
   description?: string;
 
   @Field({ nullable: true })
-  @Length(10, 255)
+  @Length(5, 255)
   ingredients?: string;
 
-  @Field((type) => Int, { nullable: true })
-  categoryId?: number;
+  @Field((type) => NameOrIdInput, { nullable: true })
+  categoryNameOrId: NameOrIdInput;
 }

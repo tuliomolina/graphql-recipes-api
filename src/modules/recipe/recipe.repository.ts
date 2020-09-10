@@ -1,25 +1,45 @@
 import { Repository, EntityRepository } from "typeorm";
-import { Recipe } from "./recipe.entity";
 import { Service } from "typedi";
+
+import { Recipe } from "./recipe.entity";
 import { CreateRecipeInput } from "./types/create-recipe-input.type";
 import { User } from "../user/user.entity";
 import { Category } from "../category/category.entity";
-import { SearchInput } from "../utils/types/search-input.type";
+import { NameOrIdInput } from "../utils/types/name-or-id-input.type";
+import { validateNameOrIdInput } from "../utils/validate-name-or-id-input";
 
 @Service()
 @EntityRepository(Recipe)
 export class RecipeRepository extends Repository<Recipe> {
-  async findRecipe({ id, name }: SearchInput): Promise<Recipe> {
+  async findRecipe(recipeNameOrIdInput: NameOrIdInput): Promise<Recipe> {
+    validateNameOrIdInput(recipeNameOrIdInput, "Recipe");
+
+    const { id, name } = recipeNameOrIdInput;
     const foundRecipe = await this.findOne({ where: [{ id }, { name }] });
+
+    if (!foundRecipe) {
+      throw new Error("Recipe not found");
+    }
+
     return foundRecipe;
   }
 
-  async findOwnedRecipe(id: number, userId: number): Promise<Recipe> {
+  async findOwnedRecipe(
+    recipeNameOrIdInput: NameOrIdInput,
+    userId: number
+  ): Promise<Recipe> {
+    validateNameOrIdInput(recipeNameOrIdInput, "Recipe");
+
+    const { id, name } = recipeNameOrIdInput;
     const foundRecipe = await this.findOne({
-      where: { id, userId },
+      where: [
+        { id, userId },
+        { name, userId },
+      ],
     });
+
     if (!foundRecipe) {
-      throw new Error(`Recipe with ID "${id}" not found`);
+      throw new Error("Recipe not found");
     }
 
     return foundRecipe;
