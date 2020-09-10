@@ -16,7 +16,11 @@ export class CategoryService {
   ) {}
 
   async getCategories(): Promise<Category[]> {
-    return await this.categoryRespository.find();
+    return await this.categoryRespository.find({
+      order: {
+        id: "DESC",
+      },
+    });
   }
 
   async getOneCategory(

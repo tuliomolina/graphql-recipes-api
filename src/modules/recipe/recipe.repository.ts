@@ -70,7 +70,7 @@ export class RecipeRepository extends Repository<Recipe> {
       });
     }
 
-    return await query.getMany();
+    return await query.orderBy("recipe.id", "DESC").getMany();
   }
 
   async createRecipe(

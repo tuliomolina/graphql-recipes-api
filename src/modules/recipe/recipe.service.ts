@@ -21,7 +21,11 @@ export class RecipeService {
   ) {}
 
   async getRecipes(): Promise<Recipe[]> {
-    return await this.recipeRespository.find();
+    return await this.recipeRespository.find({
+      order: {
+        id: "DESC",
+      },
+    });
   }
 
   async getOneRecipe(recipeNameOrIdInput: NameOrIdInput): Promise<Recipe> {
@@ -29,7 +33,12 @@ export class RecipeService {
   }
 
   async getMyRecipes({ userId }: PayloadUser): Promise<Recipe[]> {
-    return await this.recipeRespository.find({ userId });
+    return await this.recipeRespository.find({
+      where: { userId },
+      order: {
+        id: "DESC",
+      },
+    });
   }
 
   async getFilteredRecipes(filterInput: FilterInput): Promise<Recipe[]> {
