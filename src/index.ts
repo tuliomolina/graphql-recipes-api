@@ -30,6 +30,7 @@ async function main() {
   const apolloServer = new ApolloServer({
     schema,
     playground: true,
+    introspection: true,
     context: contextCreator,
     formatError: ({ message, extensions }) => {
       return { message, extensions };
