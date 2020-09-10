@@ -41,14 +41,14 @@ export class CategoryService {
     updateCategoryInput: UpdateCategoryInput,
     { userId }: PayloadUser
   ): Promise<Category> {
-    const { categoryNameOrId, updateName } = updateCategoryInput;
+    const { categoryNameOrId, name } = updateCategoryInput;
 
     const category = await this.categoryRespository.findCategory(
       categoryNameOrId,
       userId
     );
 
-    category.name = updateName;
+    category.name = name;
 
     return await category.save();
   }

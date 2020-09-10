@@ -10,5 +10,5 @@ export class UpdateCategoryInput {
 
   @Field()
   @Length(3, 255)
-  updateName: string;
+  name: string;
 }

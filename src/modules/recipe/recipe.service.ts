@@ -8,6 +8,7 @@ import { PayloadUser } from "src/utils/types/payload-user.interface";
 import { CategoryRepository } from "../category/category.repository";
 import { UpdateRecipe } from "./types/update-recipe.interface";
 import { NameOrIdInput } from "../utils/types/name-or-id-input.type";
+import { FilterInput } from "./types/filter-input.type";
 
 export class RecipeService {
   constructor(
@@ -29,6 +30,10 @@ export class RecipeService {
 
   async getMyRecipes({ userId }: PayloadUser): Promise<Recipe[]> {
     return await this.recipeRespository.find({ userId });
+  }
+
+  async getFilteredRecipes(filterInput: FilterInput): Promise<Recipe[]> {
+    return await this.recipeRespository.getFilteredRecipes(filterInput);
   }
 
   async createRecipe(
@@ -54,6 +59,10 @@ export class RecipeService {
     updateRecipeInput: UpdateRecipeInput,
     { userId }: PayloadUser
   ): Promise<Recipe> {
+    if (Object.keys(updateRecipeInput).length <= 1) {
+      throw new Error("At least one update field must be provided");
+    }
+
     const { recipeNameOrId, categoryNameOrId } = updateRecipeInput;
 
     const recipe = await this.recipeRespository.findRecipe(

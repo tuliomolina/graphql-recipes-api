@@ -7,6 +7,7 @@ import { User } from "../user/user.entity";
 import { Category } from "../category/category.entity";
 import { NameOrIdInput } from "../utils/types/name-or-id-input.type";
 import { validateNameOrIdInput } from "../utils/validate-name-or-id-input";
+import { FilterInput } from "./types/filter-input.type";
 
 @Service()
 @EntityRepository(Recipe)
@@ -33,6 +34,49 @@ export class RecipeRepository extends Repository<Recipe> {
     }
 
     return foundRecipe;
+  }
+
+  async getFilteredRecipes(filterInput: FilterInput): Promise<Recipe[]> {
+    const {
+      nameList,
+      descriptionTerm,
+      ingredient,
+      categoryNameList,
+    } = filterInput;
+
+    console.log(filterInput);
+    const query = this.createQueryBuilder("recipe").innerJoin(
+      "recipe.category",
+      "category"
+    );
+
+    if (nameList && nameList.length > 0) {
+      query.andWhere("recipe.name IN (:...nameList)", { nameList });
+    }
+
+    if (categoryNameList && categoryNameList.length > 0) {
+      query.andWhere("category.name IN (:...categoryNameList)", {
+        categoryNameList,
+      });
+    }
+
+    if (descriptionTerm)
+      query.andWhere("recipe.description LIKE :descriptionTerm", {
+        descriptionTerm: `%${descriptionTerm}%`,
+      });
+
+    if (ingredient) {
+      query.andWhere("recipe.ingredients LIKE :ingredient", {
+        ingredient: `%${ingredient}%`,
+      });
+    }
+
+    const result = await query.getMany();
+
+    console.log(result);
+    console.log(result.length);
+
+    return result;
   }
 
   async createRecipe(
