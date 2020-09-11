@@ -194,8 +194,8 @@ input LoginInput {
   password: String!
 }
 
-# Input to uniquely find an object by either name or id. Only one of the fields 
-# is accepted.
+# Type for identifying an object by either name or id. Only one of the 
+# fields is accepted.
 input NameOrIdInput {
   id: Int
   name: String
