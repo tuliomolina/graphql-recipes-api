@@ -2,7 +2,7 @@
 
 A GraphQL API for food recipes management, written in TypeScript.
 
-The main goal of this API is to provide a flexible and efficient backend service that allows to easily develop user interfaces for creating, sharing and modifying food recipes; taking advantage of GraphQL's benefits. The API was built in TypeScript, using Express, Apollo Server and the TypeGraphQL framework to efficiently integrate TypeScript patterns and functionality with GraphQL. PostgreSQL was used as database engine. Both the API and the database were deployed to Heroku. Please refer to the [API reference](#api-reference) section for usage and technical details.
+The main goal of this API is to provide a flexible and efficient backend service that allows to easily develop user interfaces for creating, sharing, and modifying food recipes; taking advantage of GraphQL's benefits. The API was built in TypeScript, using Express, Apollo Server, and the TypeGraphQL framework to efficiently integrate TypeScript patterns and functionality with GraphQL. PostgreSQL was used as database engine. Both the API and the database were deployed to Heroku. Please refer to the [API reference](#api-reference) section for usage and technical details.
 
 ## Technologies
 - [Express](https://www.npmjs.com/package/express)
@@ -20,7 +20,7 @@ The main goal of this API is to provide a flexible and efficient backend service
 
 - Clone the repo: `git clone https://github.com/TulioMolina/ts-graphql-recipes-api.git`
 - Install dependencies: `npm install`
-- Appropriately configure your development environment by creating a local postgres database and `/.env` file with the following environment variables:
+- Appropriately configure your development environment by creating a local Postgres database and `/.env` file with the following environment variables:
 ```
 PORT=<chosen port>
 JWT_SECRET=<chosen secret>
@@ -33,15 +33,15 @@ Deployed GraphQL API at this [link](https://tm-graphql-recipes-api.herokuapp.com
 
 ## API reference
 
-The API consists of three main Object Types: ```Recipe```, ```Category``` and ```User```. Clients, represented through user objects, are authorized to mutate (create, update, delete) only their associated category and recipe objects. On the other hand, client authentication provides authorization to query any category or recipe.
+The API consists of three main Object Types: ```Recipe```, ```Category```, and ```User```. Clients, represented through user objects, are authorized to mutate (create, update, delete) only their associated category and recipe objects. On the other hand, client authentication provides authorization to query any category or recipe.
 
 ### Arquitecture
-The project was structured keeping in mind the dependecy injection pattern in order to develop scalable, easy to test and highly decoupled components. Moreover, three layers with clearly delimited responsabilities were implemented: resolvers (controlers), services (business logic) and repositories (persistance layer).
+The project was structured keeping in mind the dependency injection pattern to develop scalable, easy to test, and highly decoupled components. Moreover, three layers with clearly delimited responsibilities were implemented: resolvers (controllers), services (business logic), and repositories (persistence layer).
 
-Data loaders were implemented to batch and, therefore, drastically minimize to one the number of database queries per field resolver. Also, the TypeORM's QueryBuilder API was used in cases where more complex queries were required, like filtering recipes over several criteria.  
+Data loaders were implemented to batch and, thus, drastically minimize to one the number of database queries per field resolver. Also, the TypeORM's QueryBuilder API was used in cases where more complex queries were required, like filtering recipes over several criteria.  
 
 ### Authentication
-This API employs a token-based authentication mechanism with JWT. These tokens solely contain user identification data as payload and are issued on the response to a ```login``` mutation. Therefore, to authenticate, the `Authorization: Bearer <token>` header must be included for any other query/mutation.
+This API employs a token-based authentication mechanism with JWT. These tokens solely contain user identification data as payload and are issued as return value to a ```login``` mutation. Therefore, to authenticate, the `Authorization: Bearer <token>` header must be included for any other query/mutation.
 
 ### Types definition
 
@@ -203,3 +203,4 @@ input FilterInput {
   categoryNameList: [String!]
 }
 ```
+Please notice that this [deployed API's GraphQL playground](https://tm-graphql-recipes-api.herokuapp.com/) provides an interface that shows, on the **DOCS** tab, schema and definitions in a more readable and friendly way.
