@@ -1,4 +1,4 @@
-# ts-graphql-recipes-api
+# graphql-recipes-api
 
 A GraphQL API for food recipes management, written in TypeScript.
 
