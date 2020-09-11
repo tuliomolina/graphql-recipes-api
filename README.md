@@ -60,7 +60,8 @@ type Recipe {
   updatedAt: DateTime!
 }
 
-# Category object type. It has a many to one relation with User type and one to many relation with Recipe type
+# Category object type. It has a many to one relation with User type and one to 
+# many relation with Recipe type
 type Category {
   id: ID!
   name: String!
@@ -99,9 +100,10 @@ type Query {
   # Returns an array of all existing recipes belonging to the current user
   getMyRecipes: [Recipe!]!
   
-  # Filters amongst all recipes matching the following criteria: array of recipe names, description,
-  # ingredient, array of category names. Each criterion is optional, and they are
-  # combined using AND logical operators. Returns an array of recipes
+  # Filters amongst all recipes matching the following criteria: array of 
+  # recipe names, description, ingredient, array of category names. Each 
+  # criterion is optional, and they are combined using AND logical operators. 
+  #Returns an array of recipes
   getFilteredRecipes(filterInput: FilterInput!): [Recipe!]!
   
   # Returns an array of all existing categories
@@ -121,28 +123,30 @@ type Mutation {
   # User login, returns JWT auth token
   login(loginInput: LoginInput!): AuthToken!
   
-  # Creates a new recipe belonging to the current user and linked to an existing category provided
-  # with either name or id. Returns the newly created recipe
+  # Creates a new recipe belonging to the current user and linked to an 
+  # existing category provided with either name or id. Returns the newly created 
+  # recipe
   createRecipe(createRecipeInput: CreateRecipeInput!): Recipe!
   
-  # Updates a recipe identified by either name or id. This operation may only be performed by the 
-  # recipe's owner user. Returns the updated recipe
+  # Updates a recipe identified by either name or id. This operation may only be 
+  # performed by the recipe's owner user. Returns the updated recipe
   updateRecipe(updateRecipeInput: UpdateRecipeInput!): Recipe!
   
-  # Deletes a recipe identified by id. This operation may only be performed by the recipe's owner user.
-  # Returns true if the operation was successful
+  # Deletes a recipe identified by id. This operation may only be performed by the 
+  # recipe's owner user. Returns true if the operation was successful
   deleteRecipe(id: Int!): Boolean!
   
-  # Creates a new category belonging to the current user. Returns the newly created category
+  # Creates a new category belonging to the current user. Returns the newly created
+  # category
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   
-  # Updates a category identified by either name or id. This operation may only be performed by the 
-  # category's owner user. Returns the updated category
+  # Updates a category identified by either name or id. This operation may only be 
+  # performed by the category's owner user. Returns the updated category
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
   
-  # Deletes a category identified by id. This operation may only be performed by the category's
-  # owner user. All recipes related to this category object are also deleted on cascade.
-  # Returns true if the operation was successful
+  # Deletes a category identified by id. This operation may only be performed by 
+  # the category's owner user. All recipes related to this category object are also 
+  # deleted on cascade. Returns true if the operation was successful
   deleteCategory(id: Int!): Boolean!
 }
 ```
@@ -190,7 +194,8 @@ input LoginInput {
   password: String!
 }
 
-# Input to uniquely find an object by either name or id. Only one of the fields is accepted.
+# Input to uniquely find an object by either name or id. Only one of the fields 
+# is accepted.
 input NameOrIdInput {
   id: Int
   name: String
