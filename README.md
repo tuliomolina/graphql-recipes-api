@@ -112,7 +112,7 @@ type Query {
 }
 ```
 
-#### Mutations
+#### Mutations:
 ```graphql
 type Mutation {
   # New user creation, returns the newly created user object
