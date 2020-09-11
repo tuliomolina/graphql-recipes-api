@@ -84,6 +84,6 @@ export class RecipeRepository extends Repository<Recipe> {
       user,
     });
 
-    return await recipe.save();
+    return await recipe.saveCheckingDuplicateName();
   }
 }

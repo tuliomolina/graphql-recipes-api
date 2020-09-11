@@ -1,13 +1,10 @@
 import jwt from "jsonwebtoken";
+import { Request } from "express";
 
 import { PayloadUser } from "../types/payload-user.interface";
 
-export const verifyToken = ({ headers }: any): PayloadUser => {
+export const verifyToken = ({ headers }: Request): PayloadUser => {
   const bearerHeader = headers.authorization;
-
-  if (!bearerHeader) {
-    throw new Error();
-  }
 
   const token = bearerHeader.split(" ")[1];
   const payload: any = jwt.verify(token, process.env.JWT_SECRET);

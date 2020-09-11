@@ -11,6 +11,6 @@ export class UpdateCategoryInput {
   categoryNameOrId: NameOrIdInput;
 
   @Field()
-  @Length(3, 255)
+  @Length(2, 255)
   name: string;
 }

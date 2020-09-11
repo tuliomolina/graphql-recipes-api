@@ -58,4 +58,16 @@ export class Recipe extends BaseEntity {
   @Field()
   @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
+
+  async saveCheckingDuplicateName(): Promise<Recipe> {
+    try {
+      return await this.save();
+    } catch (error) {
+      if (error.code === "23505") {
+        throw new Error("Recipe name already exists");
+      } else {
+        throw error;
+      }
+    }
+  }
 }

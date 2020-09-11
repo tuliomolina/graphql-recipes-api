@@ -13,7 +13,7 @@ import { authenticationChecker } from "./utils/auth/authentication-checker";
 import { RecipeResolver } from "./modules/recipe/recipe.resolvers";
 import { CategoryResolver } from "./modules/category/category.resolvers";
 
-async function main() {
+const main = async (): Promise<void> => {
   useContainer(Container);
   await connectDatabase();
 
@@ -43,6 +43,6 @@ async function main() {
   app.listen(port, () => {
     console.log("Server running on port", port);
   });
-}
+};
 
 main();

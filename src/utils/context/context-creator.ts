@@ -1,9 +1,15 @@
+import { Request } from "express";
+
 import { Context } from "../types/context.interface";
 import { userLoader } from "../loaders/user-loader";
 import { categoryLoader } from "../loaders/category-loader";
 import { verifyToken } from "../auth/verify-token";
 
-export const contextCreator = ({ req }: any): Context => {
+interface RawContext {
+  req: Request;
+}
+
+export const contextCreator = ({ req }: RawContext): Context => {
   const context: Context = {};
 
   try {
@@ -11,7 +17,9 @@ export const contextCreator = ({ req }: any): Context => {
     context.payloadUser = {
       ...payloadUser,
     };
-  } catch (error) {}
+  } catch (error) {
+    // let auth error be caught by TypeGraphQL authChecker
+  }
 
   context.loader = {
     user: userLoader(),

@@ -98,14 +98,14 @@ export class RecipeService {
 
     this.recipeRespository.merge(recipe, partialRecipe);
 
-    return await recipe.save();
+    return await recipe.saveCheckingDuplicateName();
   }
 
   async deleteRecipe(id: number, { userId }: PayloadUser): Promise<boolean> {
     const result = await this.recipeRespository.delete({ id, userId });
 
     if (result.affected === 0) {
-      throw new Error(`Recipe with ID "${id}" not found`);
+      throw new Error(`Recipe not found`);
     }
     return true;
   }

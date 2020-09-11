@@ -30,8 +30,6 @@ export class CategoryRepository extends Repository<Category> {
 
     const foundCategory = await query.getOne();
 
-    console.log(foundCategory);
-
     if (!foundCategory) {
       throw new Error("Category not found");
     }
@@ -48,6 +46,6 @@ export class CategoryRepository extends Repository<Category> {
       user,
     });
 
-    return await category.save();
+    return await category.saveCheckingDuplicateName();
   }
 }

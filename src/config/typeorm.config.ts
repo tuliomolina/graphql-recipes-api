@@ -1,6 +1,6 @@
 import { createConnection } from "typeorm";
 
-export async function connectDatabase() {
+export const connectDatabase = async (): Promise<void> => {
   await createConnection({
     type: "postgres",
     url: process.env.DATABASE_URL,
@@ -9,4 +9,4 @@ export async function connectDatabase() {
     logging: true,
   });
   console.log("Connected to database");
-}
+};

@@ -55,14 +55,14 @@ export class CategoryService {
 
     category.name = name;
 
-    return await category.save();
+    return await category.saveCheckingDuplicateName();
   }
 
   async deleteCategory(id: number, { userId }: PayloadUser): Promise<boolean> {
     const result = await this.categoryRespository.delete({ id, userId });
 
     if (result.affected === 0) {
-      throw new Error(`Category with ID "${id}" not found`);
+      throw new Error(`Category not found`);
     }
     return true;
   }

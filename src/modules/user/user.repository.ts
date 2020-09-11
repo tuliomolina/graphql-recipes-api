@@ -14,7 +14,7 @@ export class UserRepository extends Repository<User> {
     const foundUser = await this.findOne(id);
 
     if (!foundUser) {
-      throw new Error(`User with ID "${id}" not found`);
+      throw new Error(`User not found found`);
     }
 
     return foundUser;

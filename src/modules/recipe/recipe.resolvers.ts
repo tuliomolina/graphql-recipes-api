@@ -101,7 +101,7 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
   @Mutation((returns) => Boolean, {
     description: `Deletes a recipe identified by id. 
   This operation may only be performed by the recipe's owner user. 
-  Returns true if the operation was successful.`,
+  Returns true if the operation was successful`,
   })
   async deleteRecipe(
     @Arg("id", (type) => Int) id: number,

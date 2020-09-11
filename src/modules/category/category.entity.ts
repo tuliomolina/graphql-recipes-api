@@ -49,4 +49,16 @@ export class Category extends BaseEntity {
   @Field()
   @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
+
+  async saveCheckingDuplicateName(): Promise<Category> {
+    try {
+      return await this.save();
+    } catch (error) {
+      if (error.code === "23505") {
+        throw new Error("Category name already exists");
+      } else {
+        throw error;
+      }
+    }
+  }
 }

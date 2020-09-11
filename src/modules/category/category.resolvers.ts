@@ -77,7 +77,7 @@ export class CategoryResolver implements ResolverInterface<Category> {
     description: `Deletes a category identified by id. 
     This operation may only be performed by the category's owner user. 
     All recipes related to this category object are also deleted on cascade. 
-    Returns true if the operation was successful.`,
+    Returns true if the operation was successful`,
   })
   async deleteCategory(
     @Arg("id", (type) => Int) id: number,

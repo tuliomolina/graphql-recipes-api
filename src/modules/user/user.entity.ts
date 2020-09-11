@@ -14,7 +14,7 @@ import { Category } from "../category/category.entity";
 
 @ObjectType({
   description: `User object type. It has one to many relation with both Category and Recipe types. 
-    A user is authorized to mutate only its related recipe and category objects.`,
+    A user is authorized to mutate only its related recipe and category objects`,
 })
 @Entity()
 export class User extends BaseEntity {
