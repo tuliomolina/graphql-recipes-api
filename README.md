@@ -2,7 +2,7 @@
 
 A GraphQL API for food recipes management, written in TypeScript.
 
-The main goal of this API is to provide a flexible and efficient backend service that allows to easily develop user interfaces for creating, sharing, and modifying food recipes; taking advantage of GraphQL's benefits. The API was built in TypeScript, using Express, Apollo Server, and the TypeGraphQL framework to efficiently integrate TypeScript patterns and functionality with GraphQL. PostgreSQL was used as database engine. Both the API and the database were deployed to Heroku. Please refer to the [API reference](#api-reference) section for usage and technical details.
+The main goal of this API is to provide a flexible and efficient backend service that allows to easily develop user interfaces for creating, sharing, and modifying food recipes; taking advantage of GraphQL's benefits. The API was built in TypeScript, using Express, Apollo Server, and the TypeGraphQL framework to efficiently integrate TypeScript patterns and functionality with GraphQL. PostgreSQL was used as database engine. Both the API and the database were deployed to Heroku. Please refer to the [API reference](#api-reference) section for technical and usage details.
 
 ## Technologies
 - [Express](https://www.npmjs.com/package/express)
@@ -33,15 +33,16 @@ Deployed GraphQL API at this [link](https://tm-graphql-recipes-api.herokuapp.com
 
 ## API reference
 
-The API consists of three main Object Types: ```Recipe```, ```Category```, and ```User```. Clients, represented through user objects, are authorized to mutate (create, update, delete) only their associated category and recipe objects. On the other hand, client authentication provides authorization to query any category or recipe.
-
 ### Arquitecture
-The project was structured keeping in mind the dependency injection pattern to develop scalable, easy to test, and highly decoupled components. Moreover, three layers with clearly delimited responsibilities were implemented: resolvers (controllers), services (business logic), and repositories (persistence layer).
+This project was structured keeping in mind the dependency injection pattern to develop scalable, easy to test, and highly decoupled components. Moreover, three layers with clearly delimited responsibilities were implemented: resolvers (controllers), services (business logic), and repositories (persistence layer).
 
 Data loaders were implemented to batch and, thus, drastically minimize to one the number of database queries per field resolver. Also, the TypeORM's QueryBuilder API was used in cases where more complex queries were required, like filtering recipes over several criteria.  
 
+### Usage
+The API consists of three main Object Types: ```Recipe```, ```Category```, and ```User```. Clients, represented through user objects, are authorized to mutate (create, update, delete) only their associated category and recipe objects. On the other hand, client authentication provides authorization to query any category or recipe. In that sense, First of all, a client must use the ```signUp``` mutation to create a new user and then authenticate to start querying and mutating the API.
+
 ### Authentication
-This API employs a token-based authentication mechanism with JWT. These tokens solely contain user identification data as payload and are issued as return value to a ```login``` mutation. Therefore, to authenticate, the `Authorization: Bearer <token>` header must be included for any other query/mutation.
+The authentication mechanism is token-based with JWT tokens. These tokens solely contain user identification data as payload and are issued as return value to a ```login``` mutation. Therefore, to authenticate, the `Authorization: Bearer <token>` header must be included for any other query/mutation.
 
 ### Types definition
 
