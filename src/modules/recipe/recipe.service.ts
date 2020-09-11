@@ -93,7 +93,7 @@ export class RecipeService {
     }
 
     const partialRecipe = this.recipeRespository.create({
-      ...updateRecipeInput,
+      ...updateData,
     });
 
     this.recipeRespository.merge(recipe, partialRecipe);

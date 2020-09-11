@@ -9,7 +9,7 @@ export class FilterInput {
   nameList: string[];
 
   @Field((type) => String, { nullable: true })
-  @Length(5, 255)
+  @Length(2, 255)
   descriptionTerm: string;
 
   @Field((type) => String, { nullable: true })
