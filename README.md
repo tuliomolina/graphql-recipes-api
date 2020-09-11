@@ -18,7 +18,7 @@ The main goal of this API is to provide a flexible and efficient backend service
 
 ## Local setup
 
-- Clone the repo: `git clone https://github.com/TulioMolina/ts-graphql-recipes-api.git`
+- Clone the repo: `git clone https://github.com/TulioMolina/graphql-recipes-api.git`
 - Install dependencies: `npm install`
 - Appropriately configure your development environment by creating a local Postgres database and `/.env` file with the following environment variables:
 ```
