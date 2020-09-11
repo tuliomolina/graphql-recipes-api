@@ -22,10 +22,10 @@ The main goal of this API is to provide a flexible and efficient backend service
 - Install dependencies: `npm install`
 - Appropriately configure your development environment by creating a local postgres database and `/.env` file with the following environment variables:
 ```
-PORT=<port>
-JWT_SECRET=<secret>
-JWT_EXPIRES_IN=<expiration time, for instance: 24h>
-DATABASE_URL=<local database url: postgres://<user>:<password>@localhost/<dbname>>
+PORT=<chosen port>
+JWT_SECRET=<chosen secret>
+JWT_EXPIRES_IN=<jsonwebtoken expiration time format, for instance: 24h>
+DATABASE_URL=<local database url following this pattern: postgres://<user>:<password>@localhost/<dbname>>
 ```
 - Run locally on `PORT`: `npm run dev`
 
