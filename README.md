@@ -103,7 +103,7 @@ type Query {
   # Filters amongst all recipes matching the following criteria: array of 
   # recipe names, description, ingredient, array of category names. Each 
   # criterion is optional, and they are combined using AND logical operators. 
-  #Returns an array of recipes
+  # Returns an array of recipes
   getFilteredRecipes(filterInput: FilterInput!): [Recipe!]!
   
   # Returns an array of all existing categories
