@@ -73,7 +73,7 @@ export class RecipeService {
       throw new Error("At least one update field must be provided");
     }
 
-    const { targetRecipeNameOrId, newCategoryNameOrId } = updateRecipeInput;
+    const { targetRecipeNameOrId, categoryNameOrId } = updateRecipeInput;
 
     const recipe = await this.recipeRespository.findRecipe(
       targetRecipeNameOrId,
@@ -81,13 +81,13 @@ export class RecipeService {
     );
 
     delete updateRecipeInput.targetRecipeNameOrId;
-    delete updateRecipeInput.newCategoryNameOrId;
+    delete updateRecipeInput.categoryNameOrId;
 
     const updateData: UpdateRecipe = { ...updateRecipeInput };
 
-    if (newCategoryNameOrId) {
+    if (categoryNameOrId) {
       const category = await this.categoryRespository.findCategory(
-        newCategoryNameOrId
+        categoryNameOrId
       );
       updateData.category = category;
     }

@@ -23,5 +23,5 @@ export class UpdateRecipeInput {
   ingredients?: string;
 
   @Field((type) => NameOrIdInput, { nullable: true })
-  newCategoryNameOrId: NameOrIdInput;
+  categoryNameOrId: NameOrIdInput;
 }
