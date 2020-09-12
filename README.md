@@ -1,6 +1,6 @@
 # graphql-recipes-api
 
-A GraphQL API for food recipes management, written in TypeScript.
+A GraphQL API for food recipe management, written in TypeScript.
 
 The main goal of this API is to provide a flexible and efficient backend service that allows to easily develop user interfaces for creating, sharing, and modifying food recipes; taking advantage of GraphQL's benefits. The API was built in TypeScript, using Express, Apollo Server, and the TypeGraphQL framework to efficiently integrate TypeScript patterns and functionality with GraphQL. PostgreSQL was used as database engine. Both the API and the database were deployed to Heroku. Please refer to the [API reference](#api-reference) section for technical and usage details.
 
