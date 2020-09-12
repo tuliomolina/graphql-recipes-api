@@ -95,7 +95,7 @@ type Query {
   getRecipes: [Recipe!]!
   
   # Returns one recipe given either its name or id
-  getOneRecipe(nameOrIdInput: NameOrIdInput!): Recipe!
+  getOneRecipe(recipeNameOrId: NameOrIdInput!): Recipe!
   
   # Returns an array of all existing recipes belonging to the current user
   getMyRecipes: [Recipe!]!
@@ -110,7 +110,7 @@ type Query {
   getCategories: [Category!]!
   
   # Returns one category given either its name or id
-  getOneCategory(nameOrIdInput: NameOrIdInput!): Category!
+  getOneCategory(categoryNameOrId: NameOrIdInput!): Category!
 }
 ```
 
@@ -163,7 +163,7 @@ input CreateRecipeInput {
 
 # Type for defining and validating Recipe update input data
 input UpdateRecipeInput {
-  recipeNameOrId: NameOrIdInput!
+  targetRecipeNameOrId: NameOrIdInput!
   name: String
   description: String
   ingredients: String
@@ -177,7 +177,7 @@ input CreateCategoryInput {
 
 # Type for defining and validating Category update input data
 input UpdateCategoryInput {
-  categoryNameOrId: NameOrIdInput!
+  targetCategoryNameOrId: NameOrIdInput!
   name: String!
 }
 
