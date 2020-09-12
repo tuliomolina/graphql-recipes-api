@@ -8,7 +8,7 @@ import { NameOrIdInput } from "../../utils/types/name-or-id-input.type";
 })
 export class UpdateCategoryInput {
   @Field((type) => NameOrIdInput)
-  categoryNameOrId: NameOrIdInput;
+  targetCategoryNameOrId: NameOrIdInput;
 
   @Field()
   @Length(2, 255)

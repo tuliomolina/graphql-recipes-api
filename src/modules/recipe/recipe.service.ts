@@ -29,8 +29,8 @@ export class RecipeService {
     });
   }
 
-  async getOneRecipe(recipeNameOrIdInput: NameOrIdInput): Promise<Recipe> {
-    return await this.recipeRespository.findRecipe(recipeNameOrIdInput);
+  async getOneRecipe(recipeNameOrId: NameOrIdInput): Promise<Recipe> {
+    return await this.recipeRespository.findRecipe(recipeNameOrId);
   }
 
   async getMyRecipes({ userId }: PayloadUser): Promise<Recipe[]> {
@@ -73,21 +73,21 @@ export class RecipeService {
       throw new Error("At least one update field must be provided");
     }
 
-    const { recipeNameOrId, categoryNameOrId } = updateRecipeInput;
+    const { targetRecipeNameOrId, newCategoryNameOrId } = updateRecipeInput;
 
     const recipe = await this.recipeRespository.findRecipe(
-      recipeNameOrId,
+      targetRecipeNameOrId,
       userId
     );
 
-    delete updateRecipeInput.recipeNameOrId;
-    delete updateRecipeInput.categoryNameOrId;
+    delete updateRecipeInput.targetRecipeNameOrId;
+    delete updateRecipeInput.newCategoryNameOrId;
 
     const updateData: UpdateRecipe = { ...updateRecipeInput };
 
-    if (categoryNameOrId) {
+    if (newCategoryNameOrId) {
       const category = await this.categoryRespository.findCategory(
-        categoryNameOrId
+        newCategoryNameOrId
       );
       updateData.category = category;
     }

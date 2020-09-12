@@ -13,12 +13,12 @@ import { FilterInput } from "./types/filter-input.type";
 @EntityRepository(Recipe)
 export class RecipeRepository extends Repository<Recipe> {
   async findRecipe(
-    recipeNameOrIdInput: NameOrIdInput,
+    recipeNameOrId: NameOrIdInput,
     userId?: number
   ): Promise<Recipe> {
-    validateNameOrIdInput(recipeNameOrIdInput, "Recipe");
+    validateNameOrIdInput(recipeNameOrId, "Recipe");
 
-    const { id, name } = recipeNameOrIdInput;
+    const { id, name } = recipeNameOrId;
     const query = this.createQueryBuilder("recipe");
 
     query.where("(recipe.id = :id OR recipe.name = :name)", { id, name });

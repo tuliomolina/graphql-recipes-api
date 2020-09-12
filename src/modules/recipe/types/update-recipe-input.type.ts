@@ -8,7 +8,7 @@ import { NameOrIdInput } from "../../utils/types/name-or-id-input.type";
 })
 export class UpdateRecipeInput {
   @Field((type) => NameOrIdInput)
-  recipeNameOrId: NameOrIdInput;
+  targetRecipeNameOrId: NameOrIdInput;
 
   @Field({ nullable: true })
   @Length(2, 255)
@@ -23,5 +23,5 @@ export class UpdateRecipeInput {
   ingredients?: string;
 
   @Field((type) => NameOrIdInput, { nullable: true })
-  categoryNameOrId: NameOrIdInput;
+  newCategoryNameOrId: NameOrIdInput;
 }

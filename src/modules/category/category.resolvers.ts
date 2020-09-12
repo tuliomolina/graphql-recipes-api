@@ -37,9 +37,10 @@ export class CategoryResolver implements ResolverInterface<Category> {
     description: "Returns one category given either its name or id",
   })
   async getOneCategory(
-    @Arg("nameOrIdInput", (type) => NameOrIdInput) nameOrIdInput: NameOrIdInput
+    @Arg("categoryNameOrId", (type) => NameOrIdInput)
+    categoryNameOrId: NameOrIdInput
   ): Promise<Category> {
-    return await this.categoryService.getOneCategory(nameOrIdInput);
+    return await this.categoryService.getOneCategory(categoryNameOrId);
   }
 
   @Authorized()

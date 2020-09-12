@@ -11,12 +11,12 @@ import { validateNameOrIdInput } from "../utils/validate-name-or-id-input";
 @EntityRepository(Category)
 export class CategoryRepository extends Repository<Category> {
   async findCategory(
-    categoryNameOrIdInput: NameOrIdInput,
+    categoryNameOrId: NameOrIdInput,
     userId?: number
   ): Promise<Category> {
-    validateNameOrIdInput(categoryNameOrIdInput, "Category");
+    validateNameOrIdInput(categoryNameOrId, "Category");
 
-    const { id, name } = categoryNameOrIdInput;
+    const { id, name } = categoryNameOrId;
     const query = this.createQueryBuilder("category").leftJoinAndSelect(
       "category.recipes",
       "recipes"
