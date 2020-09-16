@@ -1,5 +1,6 @@
 import { InjectRepository } from "typeorm-typedi-extensions";
 import jwt from "jsonwebtoken";
+import { Service } from "typedi";
 
 import { UserInput } from "./types/user-input.type";
 import { LoginInput } from "./types/login-input.type";
@@ -8,6 +9,7 @@ import { User } from "./user.entity";
 import { AuthToken } from "./types/token.type";
 import { PayloadUser } from "../../utils/types/payload-user.interface";
 
+@Service()
 export class UserService {
   constructor(
     @InjectRepository(UserRepository) private userRespository: UserRepository

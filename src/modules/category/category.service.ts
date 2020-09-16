@@ -1,4 +1,5 @@
 import { InjectRepository } from "typeorm-typedi-extensions";
+import { Service } from "typedi";
 
 import { CategoryRepository } from "./category.repository";
 import { PayloadUser } from "src/utils/types/payload-user.interface";
@@ -8,6 +9,7 @@ import { Category } from "./category.entity";
 import { UpdateCategoryInput } from "./types/update-category-input.type";
 import { NameOrIdInput } from "../utils/types/name-or-id-input.type";
 
+@Service()
 export class CategoryService {
   constructor(
     @InjectRepository(CategoryRepository)

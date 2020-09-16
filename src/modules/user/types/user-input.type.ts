@@ -19,7 +19,7 @@ export class UserInput implements Partial<User> {
   @Length(6, 20)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message:
-      "Password must be between 6 and 20 characters long and have at least one of each of the following characters: uppercae, lowercase, number and non-alphanumeric",
+      "Password must be between 6 and 20 characters long and have at least one of each of the following characters: uppercae, lowercase, and number or special character ",
   })
   password: string;
 }

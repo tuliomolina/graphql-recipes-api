@@ -1,4 +1,5 @@
 import { InjectRepository } from "typeorm-typedi-extensions";
+import { Service } from "typedi";
 
 import { RecipeRepository } from "./recipe.repository";
 import { Recipe } from "./recipe.entity";
@@ -11,6 +12,7 @@ import { UpdateRecipe } from "./types/update-recipe.interface";
 import { NameOrIdInput } from "../utils/types/name-or-id-input.type";
 import { FilterInput } from "./types/filter-input.type";
 
+@Service()
 export class RecipeService {
   constructor(
     @InjectRepository(RecipeRepository)
