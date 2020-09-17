@@ -8,7 +8,7 @@ type BatchUsers = (keys: readonly number[]) => Promise<User[]>;
 const batchUsers: BatchUsers = async (keys) => {
   const userIds: number[] = [...keys];
   const users = await User.findByIds(userIds);
-  return sortBatchById(userIds, users);
+  return sortBatchById<User>(userIds, users);
 };
 
 export const userLoader = () => new DataLoader<number, User>(batchUsers);

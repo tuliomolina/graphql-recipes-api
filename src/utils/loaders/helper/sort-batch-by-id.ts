@@ -1,10 +1,13 @@
 import { User } from "src/modules/user/user.entity";
 import { Category } from "src/modules/category/category.entity";
 
-type Resource = User | Category;
+type Entity = User | Category;
 
-export const sortBatchById = (ids: number[], batchArray: Resource[]): any[] => {
-  const map: { [key: number]: Resource } = {};
+export const sortBatchById = <T extends Entity>(
+  ids: number[],
+  batchArray: T[]
+): T[] => {
+  const map: { [key: number]: T } = {};
 
   batchArray.forEach((item) => {
     map[item.id] = item;
